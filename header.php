@@ -12,6 +12,10 @@ if ($urlo=='login.php')
     $nomeurl='Login';
 if ($urlo=='film.php')
     $nomeurl='Film';
+if($urlo=='index.php')
+    $nomeurl='';
+if($urlo=='')
+    $nomeurl='';
 ?>
 
   <div class="container">
@@ -19,11 +23,14 @@ if ($urlo=='film.php')
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="index.php">Home</a>
     </li>
+    
 <?php
-if ($urlo=='index.php')
-//$nomeurl='Index';
-else
-echo "<li class=\"breadcrumb-item active\"><a href=\"$urlo\">$nomeurl</a></li>"
+if ($urlo=='index.php' || $urlo=='') {
+
+} else {
+echo "<li class=\"breadcrumb-item active\"><a href=\"$urlo\">$nomeurl</a></li>";
+}
+
 ?>
 
   </ol>
