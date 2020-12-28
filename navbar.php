@@ -28,16 +28,30 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
-      
+        <li class="nav-item">
+          <a class="nav-link" href="serie.php">Serie</a>
+        </li>
       </ul>
       <ul class="navbar-nav">
       <li class="nav-item" style="margin-right:20px;">
-          <a class="nav-link active" aria-current="page" href="login.php">
-          <i class="fas fa-user"></i> Login</a>
+          
+<?php
+if (!isset($_SESSION['login']))
+echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"login.php\"> <i class=\"fas fa-user\"></i> Login</a>";
+    else 
+    echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"show_profile.php\"> <i class=\"fas fa-user\"></i> Profilo</a>";
+?>
+          
       </li>
         <li class="nav-item" style="margin-right:20px;">
-          <a class="nav-link active" aria-current="page" href="registrationform.php">
-          <i class="fas fa-hand-point-right"></i> Registrati</a>
+        
+<?php
+if (!isset($_SESSION['login']))
+echo "<a class='nav-link active' aria-current='page' href='register.php'><i class='fas fa-hand-point-right'></i> Registrati</a>";
+    else 
+    echo "<a class='nav-link active' aria-current='page' href='logout.php'> <i class='fas fa-user'></i> Logout</a>";
+?>
+        
         </li>
         
     <form class="d-flex">

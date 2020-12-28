@@ -6,7 +6,7 @@ include 'navbar.php';
 $uri=$_SERVER['REQUEST_URI'];
 $pieces = explode("/", $uri);
 $urlo=$pieces[2];
-if ($urlo=='registrationform.php' || $urlo=='registration.php')
+if ($urlo=='register.php')
     $nomeurl='Registrazione';
 if ($urlo=='login.php')
     $nomeurl='Login';
@@ -16,6 +16,8 @@ if($urlo=='index.php')
     $nomeurl='';
 if($urlo=='')
     $nomeurl='';
+if($urlo=='show_profile.php')
+    $nomeurl='Profilo';
 ?>
 
   <div class="container">

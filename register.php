@@ -1,3 +1,7 @@
+<?php
+// start a session
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="it">
     <head>
@@ -16,19 +20,22 @@
 include 'header.php';
 ?>
 
+<?php
+if (isset($_SESSION['login']))
+printf("\n <div class='container'> <div class='alert alert-warning' role='alert'><h3> Sei già registrato.</h3></div></div> ");
+else {
+?>
+
 <div class="container">
 <?php
+if (isset($_POST['submit'])) {
+
 if (!isset($_POST["firstname"]) || !isset($_POST["lastname"]) || !isset($_POST["email"]) || !isset($_POST["pass"]) || !isset($_POST["confirm"])) {
     echo "
     <div class=\"alert alert-warning\" role=\"alert\">
-    <p><h3>Alcuni campi non sono compilati! <br/>Verrai reindirizzato tra 5 secondi alla pagina di Registrazione!</h3></p>\n 
-    </div>";
-    echo "</div>";
-    include 'footer.php';
-    echo "</body>\n</html>";
-    exit();
-    header( "Refresh:5; url=registrationform.php", true, 303);
-}
+    <p><h3>Alcuni campi non sono compilati!</h3></p> </div>";
+    
+} else {
 
 $firstname = trim($_POST["firstname"]);
 $lastname  = trim($_POST["lastname"]);
@@ -39,27 +46,24 @@ $confirm   = trim($_POST["confirm"]);
 if (empty($firstname) || empty($lastname) || empty($email) || empty($pass) || empty($confirm)) {
     echo "
     <div class=\"alert alert-warning\" role=\"alert\">
-    <p><h3>Alcuni campi sono mancanti! <br/>Verrai reindirizzato tra 5 secondi alla pagina di Registrazione!</h3></p>\n 
-    </div>";
+    <p><h3>Alcuni campi sono mancanti! </h3></p> </div>";
     echo "</div>";
-    include 'footer.php';
-    echo "</body>\n</html>";
-    exit();
-    header( "Refresh:5; url=registrationform.php", true, 303);
-}
+} 
+
+else {
 
 // mandatory data have been sent
 $error = "";
 
 // check email format
 if (!$email = filter_var(trim($_POST["email"]), FILTER_VALIDATE_EMAIL)) {
-    $error .= "<p>Ricontrolla l'email perfavore</p>\n Verrai reindirizzato tra 5 secondi alla pagina di Registrazione!";
+    $error .= "<p>Ricontrolla l'email perfavore</p>";
 }
 
 // check if passwords match
 // other checks can be performed on passwords, for example minimal length
 if ($pass != $confirm) {
-    $error .= "<p>Password non coincidono!</p>\n Verrai reindirizzato tra 5 secondi alla pagina di Registrazione!";
+    $error .= "<p>Password non coincidono!</p>";
 }
 
 // if problems with input
@@ -67,11 +71,8 @@ if ($error) {
     echo 
 "<div class=\"alert alert-warning\" role=\"alert\"><h3> $error </h3></div>";
     echo "</div>";
-    include 'footer.php';
-    echo "</body>\n</html>";
-    exit();
-    header( "Refresh:5; url=registrationform.php", true, 303);
 }
+ else {
 
 include'dbcon.php';
 
@@ -88,8 +89,7 @@ $userexist = $result2->fetch_assoc();
 
 if ($userexist["email"]==$email) {
     printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3>
-        Questa email è giò in uso. <br/> Verrai reindirizzato tra 5 secondi alla pagina di Registrazione! </h3></div></div> ");
-    header( "Refresh:5; url=registrationform.php", true, 303);
+        Questa email è giò in uso. </h3></div></div> ");
     
  } else {
 
@@ -101,15 +101,60 @@ printf("\n <div class=\"alert alert-success\" role=\"alert\"><h3>
     else {
 
 printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3>
-        Qualcosa è andato storto! <br/> Verrai reindirizzato tra 5 secondi alla pagina di Registrazione!
-        </h3></div></div> ");
-        //header( "Refresh:5; url=registrationform.php", true, 303);
+        Qualcosa è andato storto! </h3></div></div> ");
     }
 }
 
     mysqli_close($connection);
+    }
+    }
+    }
+    }
 ?>
 
+
+<div class="container" style="max-width: 80%;">
+<h5 class="text-center">
+<small class="text-muted">Benvenuto su <abbr title="Netflox.it">Netflox</abbr>, compila tutti i campi per registrarti al sito, oppure se sei già registrato vai alla pagina di <a href="login.php"/>Login</a>.</small>
+</h5>
+<br/>
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+  <div class="row mb-4">
+    <div class="col">
+   <!-- Firstname input -->
+      <div class="form-outline">
+        <input type="text" id="form3Example1" name="firstname" class="form-control" placeholder="Inserisci il tuo nome" />
+      </div>
+    </div>
+   <!-- Lastname input -->
+    <div class="col">
+      <div class="form-outline">
+        <input type="text" id="form3Example2" name="lastname" class="form-control" placeholder="Inserisci il tuo cognome" />
+      </div>
+    </div>
+  </div>
+  <!-- Email input -->
+  <div class="form-outline mb-4">
+    <input type="email" id="form3Example3" name="email" class="form-control" placeholder="Inserisci la tua email" />
+  </div>
+  <!-- Password input -->
+  <div class="form-outline mb-4">
+    <input type="password" id="form3Example4" name="pass" class="form-control" placeholder="Inserisci nuova password" />
+  </div>
+  <!-- ConfirmPassw input -->
+    <div class="form-outline mb-4">
+    <input type="password" id="form3Example4" name="confirm" class="form-control" placeholder="Conferma password" />
+  </div>
+  <!-- Submit button -->
+      <div class="d-grid gap-2 col-3 mx-auto">
+  <button type="submit" class="btn btn-primary btn-block mb-4" value="register" name="submit">Registrati</button>
+      </div>
+</form>
+</div>
+</div>
+<?php
+}
+?>
 
 <?php
 include 'footer.php';
@@ -120,3 +165,4 @@ include 'footer.php';
 
 </body>
 </html>
+

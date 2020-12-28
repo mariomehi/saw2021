@@ -1,3 +1,7 @@
+<?php
+// start a session
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="it">
     <head>
@@ -6,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="css/style.css">-->
     <link rel="stylesheet" href="bs/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <title>Netflox.it</title>
 </head>
 
@@ -16,7 +20,11 @@
 include 'header.php';
 ?>
 
-<div class="container">
+<div class="container" style="max-width: 80%;">
+<h5 class="text-center">
+<small class="text-muted">Benvenuto su <abbr title="Netflox.it">Netflox</abbr>, compila tutti i campi per registrarti al sito, oppure se sei già registrato vai alla pagina di <a href="login.php"/>Login</a>.</small>
+</h5>
+<br/>
 <form action="registration.php" method="POST">
   <div class="row mb-4">
     <div class="col">
@@ -45,7 +53,9 @@ include 'header.php';
     <input type="password" id="form3Example4" name="confirm" class="form-control" placeholder="Conferma password" />
   </div>
   <!-- Submit button -->
-  <button type="submit" class="btn btn-primary btn-block mb-4" style="display: block; margin-left: auto; margin-right: auto; width: 20%;">Registrati</button>
+      <div class="d-grid gap-2 col-3 mx-auto">
+  <button type="submit" class="btn btn-primary btn-block mb-4" value="mariaaaaaaa">Registrati</button>
+      </div>
 </form>
 </div>
 
