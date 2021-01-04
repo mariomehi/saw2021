@@ -13,7 +13,6 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <title>Netflox.it</title>
 </head>
-
 <body>
 
 <?php
@@ -70,7 +69,6 @@ if ($pass != $confirm) {
 if ($error) {
     echo 
 "<div class=\"alert alert-warning\" role=\"alert\"><h3> $error </h3></div>";
-    echo "</div>";
 }
  else {
 
@@ -89,19 +87,19 @@ $userexist = $result2->fetch_assoc();
 
 if ($userexist["email"]==$email) {
     printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3>
-        Questa email è giò in uso. </h3></div></div> ");
+        Questa email è giò in uso. </h3></div> ");
     
  } else {
 
     if (mysqli_query($connection, $query)) {
 printf("\n <div class=\"alert alert-success\" role=\"alert\"><h3>
-        La Registrazione è andata a buon fine. <br/> Verrai reindirizzato tra 5 secondi alla Homepage! </h3></div></div> ");
+        La Registrazione è andata a buon fine. <br/> Verrai reindirizzato tra 5 secondi alla Homepage! </h3></div> ");
         header( "Refresh:5; url=index.php", true, 303);
     }
     else {
 
 printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3>
-        Qualcosa è andato storto! </h3></div></div> ");
+        Qualcosa è andato storto! </h3></div> ");
     }
 }
 
@@ -113,7 +111,6 @@ printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3>
 ?>
 
 
-<div class="container" style="max-width: 80%;">
 <h5 class="text-center">
 <small class="text-muted">Benvenuto su <abbr title="Netflox.it">Netflox</abbr>, compila tutti i campi per registrarti al sito, oppure se sei già registrato vai alla pagina di <a href="login.php"/>Login</a>.</small>
 </h5>
@@ -123,34 +120,52 @@ printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3>
     <div class="col">
    <!-- Firstname input -->
       <div class="form-outline">
-        <input type="text" id="form3Example1" name="firstname" class="form-control" placeholder="Inserisci il tuo nome" />
+        <input type="text" id="form3Example1" name="firstname" class="form-control" placeholder="*Inserisci nome" pattern="[A-Za-z]+" title="solo lettere" required/>
       </div>
     </div>
    <!-- Lastname input -->
     <div class="col">
       <div class="form-outline">
-        <input type="text" id="form3Example2" name="lastname" class="form-control" placeholder="Inserisci il tuo cognome" />
+        <input type="text" id="form3Example2" name="lastname"​ class="form-control" placeholder="*Inserisci cognome" pattern="[A-Za-z]+" title="solo lettere" required/>
       </div>
     </div>
   </div>
   <!-- Email input -->
   <div class="form-outline mb-4">
-    <input type="email" id="form3Example3" name="email" class="form-control" placeholder="Inserisci la tua email" />
+    <input type="email" id="email" name="email" onchange="checkemail('checkemail.php');" class="form-control" placeholder="*Inserisci email" required/> <div id="emailerror" class="text-muted"></div>
   </div>
   <!-- Password input -->
   <div class="form-outline mb-4">
-    <input type="password" id="form3Example4" name="pass" class="form-control" placeholder="Inserisci nuova password" />
+    <input type="password" id="form3Example4" name="pass" class="form-control" placeholder="*Inserisci password" pattern="[A-Za-z0-9]{8,}" title="solo lettere e numeri minimo 8 caratteri" required/>
   </div>
   <!-- ConfirmPassw input -->
     <div class="form-outline mb-4">
-    <input type="password" id="form3Example4" name="confirm" class="form-control" placeholder="Conferma password" />
+    <input type="password" id="form3Example4" name="confirm" class="form-control" placeholder="*Conferma password" pattern="[A-Za-z0-9]{8,}" title="solo lettere e numeri minimo 8 caratteri" required/>
   </div>
   <!-- Submit button -->
       <div class="d-grid gap-2 col-3 mx-auto">
   <button type="submit" class="btn btn-primary btn-block mb-4" value="register" name="submit">Registrati</button>
       </div>
 </form>
-</div>
+
+<script src="js/jquery-3.5.1.min.js"></script>
+<script>
+function checkemail(url) {
+    let usermail = document.getElementById("email").value;
+    console.log(usermail);
+    $.post(url, { email: usermail }, function(data, status) {
+    console.log(data);
+        if (status == "success") {
+            if (data == "ko")
+document.getElementById("emailerror").innerHTML = " <mark> email esiste già</mark>";
+                else document.getElementById("emailerror").innerHTML="";
+            } else {
+            alert("qualcosa è andato storto");
+            }
+    });
+}
+</script>
+
 </div>
 <?php
 }

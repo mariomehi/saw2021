@@ -28,18 +28,22 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="serie.php">Serie</a>
-        </li>
       </ul>
       <ul class="navbar-nav">
-      <li class="nav-item" style="margin-right:20px;">
+      
           
 <?php
-if (!isset($_SESSION['login']))
-echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"login.php\"> <i class=\"fas fa-user\"></i> Login</a>";
-    else 
-    echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"show_profile.php\"> <i class=\"fas fa-user\"></i> Profilo</a>";
+if (!isset($_SESSION['login'])) {
+
+
+
+echo "<li class='nav-item' style='margin-right:20px;'> <a class=\"nav-link active\" aria-current=\"page\" href=\"login.php\"> <i class=\"fas fa-user\"></i> Login</a>";
+   } else {
+   $userid=$_SESSION['login'];
+    echo "<li class='nav-item'> <a class=\"nav-link active\" aria-current=\"page\" href=\"show_profile.php?id=$userid\"> <i class=\"fas fa-user\"></i> Profilo</a> 
+    </li><li>";
+echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"admin/index.php\"> <i class=\"fas fa-tools\"></i> Admin</a>";
+    }
 ?>
           
       </li>
@@ -49,7 +53,7 @@ echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"login.php\"> <i 
 if (!isset($_SESSION['login']))
 echo "<a class='nav-link active' aria-current='page' href='register.php'><i class='fas fa-hand-point-right'></i> Registrati</a>";
     else 
-    echo "<a class='nav-link active' aria-current='page' href='logout.php'> <i class='fas fa-user'></i> Logout</a>";
+    echo "<a class='nav-link active' aria-current='page' href='logout.php'> <i class='fas fa-sign-out-alt'></i> Logout</a>";
 ?>
         
         </li>

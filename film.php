@@ -11,7 +11,6 @@ session_start();
     <!--<link rel="stylesheet" href="css/style.css">-->
     <link rel="stylesheet" href="bs/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    
     <title>Netflox.it</title>
 </head>
 <body>
@@ -21,13 +20,39 @@ include 'header.php';
 ?>
 
 <div class="container">
-  <p></p>
-  <i class="fas fa-user"></i>
-  <i class="fas fa-coffee"></i>
-  <i class="fas fa-car"></i>
-  <i class="fas fa-file"></i>
-  <i class="fas fa-bars"></i>
+
+
+<div class="row row-cols-1 row-cols-md-4 g-4">
+
+<?php
+include'dbcon.php';
+$query="SELECT idfilm FROM Films ORDER by ID DESC";
+$result=mysqli_query($connection, $query);
+while($row = $result->fetch_assoc()) {
+
+$_GET['imdb'] = $row['idfilm'];
+include"filmdata.php";
+?>
+
+  <div class="col">
+    <div class="card">
+      <img src="<?php echo $obj["Poster"]; ?>" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title"><?php echo $obj["Title"]; ?></h5>
+        <p class="card-text"><?php echo $obj["Genre"]; ?></p>
+      </div>
+    </div>
+  </div>
+
+<?php
+  }
+?>
 </div>
+
+
+
+</div>
+<br/>
 
 <?php
 include 'footer.php';

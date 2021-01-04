@@ -33,16 +33,18 @@ function checkUser($email, $password){
     
 include'dbcon.php';
     
-$query = "SELECT password FROM Members WHERE email='$email'";
+$query = "SELECT * FROM Members WHERE email='$email'";
 $result= mysqli_query($connection, $query);
 //cerco la password cifrata corrispondente all'email e la salvo in userCP
 $userCP = $result->fetch_assoc();
+$userID = $userCP['id'];
 
 //controllo se la password è corretta
     if(password_verify($password, $userCP['password'])){
             echo "Benvenuto!\n";
             echo "SID: " . session_id() . "\n";
-            $_SESSION['login']=1;
+            echo $userID;
+            $_SESSION['login']=$userID;
         header('Location: index.php');
         }
         else {
@@ -57,12 +59,12 @@ printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3> Email o passwo
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
   <!-- Email input -->
   <div class="form-outline mb-4">
-    <input type="email" id="form1Example1" name="email" class="form-control" placeholder="Inserisci email" />
+    <input type="email" id="form1Example1" name="email" class="form-control" placeholder="Inserisci email" required/>
   </div>
 
   <!-- Password input -->
   <div class="form-outline mb-4">
-    <input type="password" id="form1Example2" name="pass" class="form-control" placeholder="Inserisci password" />
+    <input type="password" id="form1Example2" name="pass" class="form-control" placeholder="Inserisci password" required/>
   </div>
 
   <!-- 2 column grid layout for inline styling -->

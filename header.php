@@ -6,18 +6,27 @@ include 'navbar.php';
 $uri=$_SERVER['REQUEST_URI'];
 $pieces = explode("/", $uri);
 $urlo=$pieces[2];
+    if (isset ($_SESSION['login']))
+    $userid=$_SESSION['login'];
+    else $userid="";
 if ($urlo=='register.php')
     $nomeurl='Registrazione';
 if ($urlo=='login.php')
     $nomeurl='Login';
 if ($urlo=='film.php')
     $nomeurl='Film';
+if ($urlo=='serie.php')
+    $nomeurl='Serie';
 if($urlo=='index.php')
     $nomeurl='';
 if($urlo=='')
     $nomeurl='';
+if($urlo=='show_profile.php?id='. $userid)
+    $nomeurl='Profilo';
 if($urlo=='show_profile.php')
     $nomeurl='Profilo';
+if ($urlo=='update_profile.php')
+$nomeurl='Profilo';
 ?>
 
   <div class="container">
