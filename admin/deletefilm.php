@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,77 +78,41 @@
                     </div>
                 </nav>
 
-                <h2>Movies</h2>
+                <h2>Delete Film</h2>
+                <br />
 
                 <?php
-                if (isset($_POST['submit'])) {
-                    $idfilm = $_POST['idfilm'];
-                    $handle = curl_init();
-                    $url = "http://www.omdbapi.com/?apikey=7f5af071&i=$idfilm";
-
-                    // Set the url
-                    curl_setopt($handle, CURLOPT_URL, $url);
-
-                    // Set the result output to be a string
-                    curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-                    $output = curl_exec($handle);
-                    curl_close($handle);
-
-                    $obj = json_decode($output, true);
-                    $title = $obj["Title"];
-                    $year = $obj["Year"];
-                    $genre = $obj["Genre"];
+                if (isset($_SESSION['login'])) {
+                    $filmid = $_GET['id'];
 
                     include '../dbcon.php';
-                    $query = "INSERT INTO Films (idfilm,title,year,genre) VALUES ('$idfilm','$title','$year','$genre')";
 
-                    if (mysqli_query($connection, $query)) {
+                    $queryid = "SELECT * FROM Films WHERE id='$filmid'";
+                    $resultid = mysqli_query($connection, $queryid);
+
+
+                    if (mysqli_num_rows($resultid) <= 0) {
                         header("Refresh:5; url=films.php", true, 303);
-                        printf("\n <div class=\"alert alert-success\" role=\"alert\"><h3>
-        Movie added successfully. </h3></div> ");
+                        echo "<div class=\"alert alert-warning\" role=\"alert\"><h3>
+        Movie doesn't exist<br/> You will be redirected to movies in 5 seconds</h3></div> ";
                     } else {
-                        header("Refresh:5; url=films.php", true, 303);
-                        printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3>
-        Ops, something went wrong! </h3></div> ");
+
+                        $query = "DELETE FROM Films WHERE id='$filmid'";
+                        if (mysqli_query($connection, $query)) {
+                            header("Refresh:5; url=films.php", true, 303);
+                            echo "
+<div class=\"alert alert-success\" role=\"alert\"><h3>
+        Deleted successfully<br/> You will be redirected to movies in 5 seconds</h3></div> ";
+                        } else {
+                            header("Refresh:5; url=films.php", true, 303);
+                            echo "<div class=\"alert alert-warning\" role=\"alert\"><h3>
+        Ops, something went wrong<br/> You will be redirected to movies in 5 seconds</h3></div> ";
+                        }
                     }
+
+                    mysqli_close($connection);
                 }
                 ?>
-
-                <br />
-                <form class="d-flex" action="films.php" method="post">
-                    <input type="search" id="idfilm" placeholder="Insert Movie ID (IMDB)" class="form-control me-2" aria-label="Search" name="idfilm"><br>
-                    <input type="submit" class="btn btn-outline-success" name="submit" value="Add">
-
-
-
-                </form>
-                <br />
-                <br />
-                <div class="tabella">
-                    <table id="members" class="display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>IMDB</th>
-                                <th>Title</th>
-                                <th>Year</th>
-                                <th>Genre</th>
-                                <th>#</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-
-                <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-                <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-
-                <script>
-                    $(document).ready(function() {
-                        $('#members').DataTable({
-                            "ajax": 'filmsdata.php'
-                        });
-                    });
-                </script>
 
                 <div class="line"></div>
 
@@ -155,17 +120,10 @@
         </div>
 
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#sidebarCollapse').on('click', function() {
-                    $('#sidebar').toggleClass('active');
-                });
-            });
-        </script>
-
     <?php
     } else
         printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3> User not authorized.</h3></div> ");
     ?>
 </body>
+
 </html>

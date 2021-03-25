@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <title>Netflox.it Admin</title>
 
     <!-- Bootstrap CSS CDN -->
     <link href="../bs/css/bootstrap.min.css" rel="stylesheet">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -23,6 +24,7 @@
     <?php
     // start a session
     session_start();
+
     if (isset($_SESSION['admin'])) {
     ?>
 
@@ -49,7 +51,7 @@
                     <li>
                         <a href="films.php">
                             <i class="fas fa-film"></i>
-                            Movies
+                            Movie
                         </a>
                     </li>
                 </ul>
@@ -77,83 +79,53 @@
                     </div>
                 </nav>
 
-                <h2>Movies</h2>
-
-                <?php
-                if (isset($_POST['submit'])) {
-                    $idfilm = $_POST['idfilm'];
-                    $handle = curl_init();
-                    $url = "http://www.omdbapi.com/?apikey=7f5af071&i=$idfilm";
-
-                    // Set the url
-                    curl_setopt($handle, CURLOPT_URL, $url);
-
-                    // Set the result output to be a string
-                    curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-                    $output = curl_exec($handle);
-                    curl_close($handle);
-
-                    $obj = json_decode($output, true);
-                    $title = $obj["Title"];
-                    $year = $obj["Year"];
-                    $genre = $obj["Genre"];
-
-                    include '../dbcon.php';
-                    $query = "INSERT INTO Films (idfilm,title,year,genre) VALUES ('$idfilm','$title','$year','$genre')";
-
-                    if (mysqli_query($connection, $query)) {
-                        header("Refresh:5; url=films.php", true, 303);
-                        printf("\n <div class=\"alert alert-success\" role=\"alert\"><h3>
-        Movie added successfully. </h3></div> ");
-                    } else {
-                        header("Refresh:5; url=films.php", true, 303);
-                        printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3>
-        Ops, something went wrong! </h3></div> ");
-                    }
-                }
-                ?>
-
+                <h2>Update Profile</h2>
                 <br />
-                <form class="d-flex" action="films.php" method="post">
-                    <input type="search" id="idfilm" placeholder="Insert Movie ID (IMDB)" class="form-control me-2" aria-label="Search" name="idfilm"><br>
-                    <input type="submit" class="btn btn-outline-success" name="submit" value="Add">
 
+                <div class="container">
+                    <?php
+                    if (isset($_SESSION['login'])) {
+                        if (isset($_POST['submit'])) {
 
+                            $userid = $_GET['id'];
+                            $firstname = trim($_POST["firstname"]);
+                            $lastname  = trim($_POST["lastname"]);
+                            $email     = trim($_POST["email"]);
+                            $role     = trim($_POST["roleselect"]);
 
-                </form>
-                <br />
-                <br />
-                <div class="tabella">
-                    <table id="members" class="display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>IMDB</th>
-                                <th>Title</th>
-                                <th>Year</th>
-                                <th>Genre</th>
-                                <th>#</th>
-                            </tr>
-                        </thead>
-                    </table>
+                            include '../dbcon.php';
+
+                            $queryid = "UPDATE Members SET firstname='$firstname', lastname='$lastname', email='$email', role='$role' WHERE id='$userid'";
+
+                            if (mysqli_query($connection, $queryid)) {
+                                echo "<div class=\"alert alert-success\" role=\"alert\"><h3>Updated successfully. <br/> You will be redirected to profile in 5 seconds </h3></div>";
+                                header("Refresh:5; url=show_profile.php?id=$userid", true, 303);
+                            } else {
+                                echo "<div class=\"alert alert-warning\" role=\"alert\"><h3>Ops, something went wrong. <br/> You will be redirected to profile in 5 seconds</h3></div>";
+                                header("Refresh:5; url=show_profile.php?id=$userid", true, 303);
+                            }
+                    ?>
+                            <br />
+
+                    <?php
+                        }
+                    } else
+                        printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3> You are not logged in.</h3></div> ");
+                    ?>
+
                 </div>
-
-                <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-                <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-
-                <script>
-                    $(document).ready(function() {
-                        $('#members').DataTable({
-                            "ajax": 'filmsdata.php'
-                        });
-                    });
-                </script>
 
                 <div class="line"></div>
 
             </div>
         </div>
 
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -168,4 +140,5 @@
         printf("\n <div class=\"alert alert-warning\" role=\"alert\"><h3> User not authorized.</h3></div> ");
     ?>
 </body>
+
 </html>
