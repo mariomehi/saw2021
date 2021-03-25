@@ -7,23 +7,22 @@
       <!--Grid column-->
       <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
         <h5 class="text-uppercase">Netflox.it</h5>
-
         <p>
-Netflox è una società che da spazio al cinema, un nuovo sistema in grado di concepire la visione dei film direttamente a casa tua e ovunque tu voglia.
+          Netflox is everywhere, from your tv to your pocket.
         </p>
       </div>
       <!--Grid column-->
 
       <!--Grid column-->
       <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-        <h5 class="text-uppercase">Film</h5>
+        <h5 class="text-uppercase">Movies</h5>
 
         <ul class="list-unstyled mb-0">
           <li>
-     <a href="#!" class="text-dark">Film più Visti</a>
+            <a href="#!" class="text-dark">Most viewed</a>
           </li>
-                    <li>
-     <a href="#!" class="text-dark">Film più Votati</a>
+          <li>
+            <a href="#!" class="text-dark">Most rated</a>
           </li>
 
         </ul>
@@ -32,14 +31,14 @@ Netflox è una società che da spazio al cinema, un nuovo sistema in grado di co
 
       <!--Grid column-->
       <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-        <h5 class="text-uppercase mb-0">Serie</h5>
+        <h5 class="text-uppercase">Info</h5>
 
         <ul class="list-unstyled">
           <li>
-    <a href="#!" class="text-dark">Serie più Viste</a>
+            <a href="#!" class="text-dark">About us</a>
           </li>
           <li>
-    <a href="#!" class="text-dark">Serie più Votate</a>
+            <a href="#!" class="text-dark">Privacy police</a>
           </li>
         </ul>
       </div>
@@ -50,8 +49,7 @@ Netflox è una società che da spazio al cinema, un nuovo sistema in grado di co
   <!-- Grid container -->
 
   <!-- Copyright -->
-  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)"> © 2020 Copyright: Made with <3 by RC & MM
-  </div>
-  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)"> © 2020 Copyright: Made with <3 by RC & MM </div>
+      <!-- Copyright -->
 </footer>
 <!-- Footer -->

@@ -1,113 +1,79 @@
-<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></li>
-    <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></li>
-    <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="https://i.imgur.com/wNnMZPA.jpg" class="d-block w-100" alt="..." style="height:300px;">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>First slide label</h5>
-        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="https://i.imgur.com/AGWQTuH.jpg" class="d-block w-100" alt="..." style="height:300px;">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Second slide label</h5>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="https://i.imgur.com/inUiJIr.jpg" class="d-block w-100" alt="..." style="height:300px;">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Third slide label</h5>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-      </div>
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </a>
-</div>
-
+<br />
 <div class="container">
-<!--
-    <section class="main-container" >
-      <div class="location" id="home">
-          <h1 id="home">Popular on Netflix</h1>
-          <div class="box">
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p1.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p2.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p3.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p4.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p5.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p6.PNG?raw=true" alt=""></a>
-    
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p7.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p8.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p9.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p10.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p11.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p12.PNG?raw=true" alt=""></a>        
+
+  <h3>Top 5</h3>
+
+  <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+    <?php
+    include 'dbcon.php';
+
+    //$queryavgrate = "SELECT ROUND(AVG(rating),1) as averageRating FROM Rates;
+
+    $query = "SELECT Films.id, Films.title, Films.year, Films.idfilm, ROUND(AVG(Rates.rating),1) as avgrating FROM Films INNER JOIN Rates ON Rates.idfilm=Films.id GROUP BY Films.id ORDER by avgrating DESC limit 5;";
+    $result = mysqli_query($connection, $query);
+
+    while ($row = $result->fetch_assoc()) {
+      $_GET['imdb'] = $row['idfilm'];
+      include "ajax/filmdata.php";
+    ?>
+
+      <div class="card bg-white text-white" style="border:none;">
+        <a style="text-decoration: none;" href="movie.php?id=<?php echo $row["id"]; ?>">
+          <div style="background-image:url('<?php echo $obj["Poster"]; ?>'); padding-bottom: 86%; background-size: cover; background-position: center center; width: 100%; height:300px;">
+
+
+            <div class="card-img-overlay" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1)); top:240px; color:white; right:5px;  left:5px;">
+              <h6 class="card-title" style="position: relative; bottom: 10px; background: rgba(0, 0, 0, 0);">
+                <?php echo $obj["Title"] . " (" . $obj["Year"] . ")"  ?>
+              </h6>
+            </div>
+
+            <div class="ratstarfilm"><i class="fas fa-star"></i> <?php echo $row["avgrating"]; ?></div>
           </div>
-      </div>
-      
+        </a>
 
-      <h1 id="myList">Trending Now</h1>
-      <div class="box">
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t1.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t2.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t3.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t4.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t5.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t6.PNG?raw=true" alt=""></a>                  
-      </div>
-      
-      <h1 id="tvShows">TV Shows</h1>
-      <div class="box">
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv1.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv2.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv3.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv4.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv5.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv6.PNG?raw=true" alt=""></a>
-
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv7.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv8.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv9.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv10.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv11.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv12.PNG?raw=true" alt=""></a>              
-      </div>
-      
-
-      <h1 id="movies">Blockbuster Action & Adventure</h1>
-      <div class="box">
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m1.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m2.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m3.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m4.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m5.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m6.PNG?raw=true" alt=""></a>                
       </div>
 
-      <h1 id="originals">Netflix Originals</h1>
-      <div class="box">
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o1.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o2.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o3.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o4.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o5.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o6.PNG?raw=true" alt=""></a>                
-      </div>
- </section>
- -->
-</div>
+    <?php
+    }
+    ?>
+  </div>
+
 <br/>
+  <h3>Latest added</h3>
+  <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+    <?php
+    include 'dbcon.php';
+    $query = "SELECT * FROM Films ORDER by ID DESC limit 5";
+    $result = mysqli_query($connection, $query);
+
+    while ($row = $result->fetch_assoc()) {
+      $_GET['imdb'] = $row['idfilm'];
+      include "ajax/filmdata.php";
+    ?>
+
+      <div class="card bg-white text-white" style="border:none;">
+        <a href="movie.php?id=<?php echo $row["id"]; ?>">
+          <div style="background-image:url('<?php echo $obj["Poster"]; ?>'); padding-bottom: 86%; background-size: cover; background-position: center center; width: 100%; height:300px;">
+
+
+            <div class="card-img-overlay" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1)); top:240px; color:white; right:5px;  left:5px;">
+              <h6 class="card-title" style="position: relative; bottom: 10px; background: rgba(0, 0, 0, 0);">
+                <?php echo $obj["Title"] . " (" . $obj["Year"] . ")"  ?></h6>
+              <p class="card-text"></p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    <?php
+    }
+    ?>
+  </div>
+
+
+</div>
+
+<br />
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="js/slider.js"></script>
